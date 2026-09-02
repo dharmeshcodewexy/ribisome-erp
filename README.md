@@ -1,0 +1,1 @@
+# nodejs-sequalize-starter-kit
