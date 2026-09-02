@@ -1,0 +1,9 @@
+{
+  "postman.settings.dotenv-detection-notification-visibility": false,
+  "cSpell.words": ["aadhar", "cgst", "gstin", "igst", "pincode", "sgst", "ZAPIM"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

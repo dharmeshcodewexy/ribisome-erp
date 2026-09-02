@@ -1,0 +1,50 @@
+"use strict";
+// External dependencies start here
+const fs = require("fs");
+const path = require("path");
+const Sequelize = require("sequelize");
+const process = require("process");
+const { logger } = require("../../services/logger/winston.service");
+// External dependencies end here
+
+// Internal dependencies start here
+const basename = path.basename(__filename);
+const env = process.env.NODE_ENV || "development";
+const config = require(__dirname + "/../config")[env];
+// Internal dependencies start here
+
+const db = {};
+const sequelize = new Sequelize(config.database, config.username, config.password, config);
+// const sequelize = new Sequelize(envs.db.database, envs.db.username, envs.db.password, envs.db);
+
+// Authenticate asynchronously without blocking startup
+sequelize
+  .authenticate()
+  .then(() => {
+    logger.info("💾 Database connection established successfully");
+  })
+  .catch((error) => {
+    logger.error("❌ Unable to connect to the database: ", error);
+  });
+
+// Cache model files list to avoid repeated fs operations
+const modelFiles = fs.readdirSync(__dirname).filter((file) => {
+  return file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js" && file.indexOf(".test.js") === -1;
+});
+
+// Load models
+modelFiles.forEach((file) => {
+  const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+  db[model.name] = model;
+});
+
+Object.keys(db).forEach((modelName) => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
+});
+
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
+module.exports = db;

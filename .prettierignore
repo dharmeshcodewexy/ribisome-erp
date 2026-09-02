@@ -1,0 +1,10 @@
+node_modules
+logs
+uploads
+coverage
+*.log
+package-lock.json
+pnpm-lock.yaml
+fcm-service-account-key.json
+.env*
+*.md
