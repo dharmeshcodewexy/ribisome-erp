@@ -140,6 +140,8 @@ const envs = Object.freeze({
     bulk_unit_upload_rows: "bulk_unit_upload_rows",
     bulk_owner_uploads: "bulk_owner_uploads",
     bulk_owner_upload_rows: "bulk_owner_upload_rows",
+    users: "users",
+    login_sessions: "login_sessions",
     roles: "roles",
     permissions: "permissions",
     role_permissions: "role_permissions",
