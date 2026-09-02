@@ -1,10 +1,12 @@
 "use strict";
 
+const { envs } = require("../../services/environment.service");
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     // Insert roles
     const roles = await queryInterface.bulkInsert(
-      "roles",
+      envs.tables.roles,
       [
         {
           name: "superadmin",
@@ -33,7 +35,7 @@ module.exports = {
 
     // Insert permissions
     const permissions = await queryInterface.bulkInsert(
-      "permissions",
+      envs.tables.permissions,
       [
         // User management permissions
         {
@@ -163,12 +165,12 @@ module.exports = {
       ...staffPermissions,
     ];
 
-    await queryInterface.bulkInsert("role_permissions", allRolePermissions);
+    await queryInterface.bulkInsert(envs.tables.role_permissions, allRolePermissions);
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("role_permissions", null, {});
-    await queryInterface.bulkDelete("permissions", null, {});
-    await queryInterface.bulkDelete("roles", null, {});
+    await queryInterface.bulkDelete(envs.tables.role_permissions, null, {});
+    await queryInterface.bulkDelete(envs.tables.permissions, null, {});
+    await queryInterface.bulkDelete(envs.tables.roles, null, {});
   },
 };
