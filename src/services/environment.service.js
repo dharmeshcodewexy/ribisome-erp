@@ -145,6 +145,7 @@ const envs = Object.freeze({
     roles: "roles",
     permissions: "permissions",
     role_permissions: "role_permissions",
+    category_master: "category_master",
   },
 
   // AWS Cred

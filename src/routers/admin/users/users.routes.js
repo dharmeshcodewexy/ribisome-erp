@@ -1,6 +1,7 @@
 // External dependencies - Start
 const router = require("express").Router({ mergeParams: true });
 const { z } = require("zod");
+const { hashSync } = require("bcryptjs");
 // External dependencies - End
 
 // Internal dependencies - Start
@@ -24,6 +25,8 @@ const updateUserSchema = z.object({
   email: z.string().email("Invalid email format").optional(),
   phone: z.string().optional(),
   status: z.enum(["0", "1", "2", "3"]).optional(),
+  password: z.string().min(6, "Password must be at least 6 characters").optional(),
+  role_id: z.number().positive("Invalid role").optional(),
 });
 
 // 2. Define Route Handlers
@@ -114,12 +117,14 @@ router.post("/", checkPermission("create_user"), validateRequest(createUserSchem
       return next(new AppError(409, "User with this email already exists"));
     }
 
+    const hashedPassword = hashSync(password, 10);
+
     // Create user
     const newUser = await User.create({
       fullname,
       email,
       phone,
-      password, // Hash this in production
+      password: hashedPassword, // Hash this in production
       status: 1,
     });
 
@@ -159,11 +164,16 @@ router.post("/", checkPermission("create_user"), validateRequest(createUserSchem
 router.put("/:id", checkPermission("update_user"), validateRequest(updateUserSchema), async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { fullname, email, phone, status } = req.body;
+    const { fullname, email, phone, status, password, role_id } = req.body;
 
     const user = await User.findByPk(id);
     if (!user) {
       return next(new AppError(404, "User not found"));
+    }
+
+    let hashedPassword;
+    if (password) {
+      hashedPassword = hashSync(password, 10);
     }
 
     // Update user
@@ -172,7 +182,13 @@ router.put("/:id", checkPermission("update_user"), validateRequest(updateUserSch
       ...(email && { email }),
       ...(phone && { phone }),
       ...(status && { status }),
+      ...(hashedPassword && { password: hashedPassword }),
+      ...(role_id && { role_id }),
     });
+
+    if (role_id) {
+      await UserRole.update({ role_id }, { where: { user_id: id, is_primary: true } });
+    }
 
     const updatedUser = await User.findByPk(id, {
       include: {

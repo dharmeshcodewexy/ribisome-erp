@@ -21,6 +21,10 @@ const checkPermission = (permissions, mode = "all") => {
       if (!userId) {
         return next(new AppError(403, "User ID not found in request context"));
       }
+      // super admin bypass all permission
+      if(userId == 1){
+        return next();
+      }
 
       const permissionArray = Array.isArray(permissions) ? permissions : [permissions];
 

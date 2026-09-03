@@ -1,0 +1,26 @@
+[
+  {
+    "name": "create_category",
+    "description": "Create new categories",
+    "module": "category_master",
+    "status": "active"
+  },
+  {
+    "name": "read_category",
+    "description": "View category details",
+    "module": "category_master",
+    "status": "active"
+  },
+  {
+    "name": "update_category",
+    "description": "Edit category information",
+    "module": "category_master",
+    "status": "active"
+  },
+  {
+    "name": "delete_category",
+    "description": "Delete categories",
+    "module": "category_master",
+    "status": "active"
+  }
+]

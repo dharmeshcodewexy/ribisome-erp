@@ -8,6 +8,9 @@ const router = require("express").Router({ mergeParams: true });
 
 const authRoutes = require("./routers/auth/auth.routes");
 const globalRoutes = require("./routers/global.routes");
+// const superAdminRouter = require("./routers/super-admin/super-admin.routes");
+const adminRouter = require("./routers/admin/admin.routes");
+const staffRouter = require("./routers/staff/staff.routes");
 // Internal dependencies end here
 
 // Reserved Routes: parent only: POST, DELETE
@@ -18,6 +21,11 @@ const globalRoutes = require("./routers/global.routes");
 // Routes mapping start here
 
 router.use("/auth", authRoutes);
+
+// Role-based route groups
+// router.use("/superadmin", superAdminRouter);
+router.use("/admin", adminRouter);
+router.use("/staff", staffRouter);
 
 // Global routes - Start
 router.use(globalRoutes);

@@ -134,6 +134,39 @@ module.exports = {
           created_at: new Date(),
           updated_at: new Date(),
         },
+        // Category Master permissions
+        // {
+        //   name: "create_category",
+        //   description: "Create new categories",
+        //   module: "category_master",
+        //   status: "active",
+        //   created_at: new Date(),
+        //   updated_at: new Date(),
+        // },
+        // {
+        //   name: "read_category",
+        //   description: "View category details",
+        //   module: "category_master",
+        //   status: "active",
+        //   created_at: new Date(),
+        //   updated_at: new Date(),
+        // },
+        // {
+        //   name: "update_category",
+        //   description: "Edit category information",
+        //   module: "category_master",
+        //   status: "active",
+        //   created_at: new Date(),
+        //   updated_at: new Date(),
+        // },
+        // {
+        //   name: "delete_category",
+        //   description: "Delete categories",
+        //   module: "category_master",
+        //   status: "active",
+        //   created_at: new Date(),
+        //   updated_at: new Date(),
+        // },
       ],
       { returning: true }
     );
@@ -146,7 +179,9 @@ module.exports = {
     }));
 
     // Assign admin permissions (everything except manage_roles and manage_permissions)
+    // 12, 13, 14, 15 are the newly added category permissions
     const adminPermissions = [1, 2, 3, 7, 8, 9, 10].map((permId) => ({
+    // const adminPermissions = [1, 2, 3, 7, 8, 9, 10, 12, 13, 14, 15].map((permId) => ({
       role_id: 2, // admin
       permission_id: permId,
       created_at: new Date(),
@@ -154,6 +189,7 @@ module.exports = {
 
     // Assign staff permissions (read and view only)
     const staffPermissions = [2, 7, 10].map((permId) => ({
+    // const staffPermissions = [2, 7, 10, 13].map((permId) => ({
       role_id: 3, // staff
       permission_id: permId,
       created_at: new Date(),

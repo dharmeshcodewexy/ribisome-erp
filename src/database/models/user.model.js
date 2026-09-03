@@ -6,10 +6,11 @@ const PROTECTED_ATTRIBUTES = ["password"];
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    static associate({ Role }) {
+    static associate({ Role, UserRole }) {
       // RBAC: User has many roles through the user_roles junction table
       this.belongsToMany(Role, {
-        through: envs.tables.user_roles,
+        // through: envs.tables.user_roles,
+        through: UserRole,
         foreignKey: "user_id",
         otherKey: "role_id",
         as: "roles",
@@ -19,6 +20,8 @@ module.exports = (sequelize, DataTypes) => {
       // Note: Cannot use 'user_roles' alias since belongsToMany already creates it internally
       // Uncomment if you need direct junction table access with a different name:
       // this.hasMany(UserRole, { foreignKey: "user_id", as: "role_assignments" });
+
+      this.hasMany(UserRole, { foreignKey: "user_id", as: "user_roles" });
     }
 
     toJSON() {
